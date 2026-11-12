@@ -61,7 +61,7 @@ int main(void) {
 
     printf("\nВводите строки (числа через пробел). Ctrl+D - выход.\n");
 
-    char input[256];
+    char input[MAX_STR_LEN];
     while (1) {
         printf("> ");
         fflush(stdout);
