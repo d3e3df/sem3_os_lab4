@@ -41,29 +41,25 @@ int main(int argc, char* argv[]) {
         double sum = 0.0;
         int count = 0;
         int invalid = 0;
-        char* p = shared->buffer;
 
-        while (*p) {
-            while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r') {
-                p++;
-            }
-            if (*p == '\0')
-                break;
+        char local_buffer[MAX_STR_LEN];
+        strncpy(local_buffer, shared->buffer, MAX_STR_LEN - 1);
+        local_buffer[MAX_STR_LEN - 1] = '\0';
 
+        char* token = strtok(local_buffer, " \t\n\r");
+
+        while (token != NULL) {
             char* end;
-            double val = strtod(p, &end);
-            if (end == p) {
+            double val = strtod(token, &end);
+
+            if (*end != '\0' || end == token) {
                 invalid = 1;
-                while (*p && *p != ' ' && *p != '\t' && *p != '\n' &&
-                       *p != '\r') {
-                    p++;
-                }
-                continue;
+                break;
             }
 
             sum += val;
             count++;
-            p = end;
+            token = strtok(NULL, " \t\n\r");
         }
 
         if (count == 0 || invalid) {
